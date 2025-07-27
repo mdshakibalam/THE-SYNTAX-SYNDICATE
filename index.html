@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FridgeFinder - Share Food, Not Waste</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+    <header class="header">
+        <div class="logo-container">
+            <svg class="logo-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2H7a2 2 0 00-2 2v2m14 0a2 2 0 01-2 2H7a2 2 0 01-2-2"></path>
+            </svg>
+            <h1 class="logo-text">FridgeFinder</h1>
+        </div>
+        <div class="header-controls">
+            <input type="text" placeholder="Search" class="search-input">
+            <nav class="main-nav">
+                <a href="#" class="nav-link" id="aboutBtn">About Us</a>
+                <a href="#" class="nav-link" id="howItWorksBtn">How It Works</a>
+            </nav>
+            <button class="btn btn-primary" id="addFridgeBtn">Add a Fridge</button>
+        </div>
+    </header>
+
+    <main class="main-content-wrapper">
+        <aside class="sidebar">
+            <h2 class="sidebar-title">Nearby Fridges</h2>
+            <div id="fridge-list" class="fridge-list">
+                <!-- Fridge cards will be added here dynamically -->
+            </div>
+        </aside>
+
+        <section class="map-container">
+            <div id="map" class="map">
+                <div class="map-error" style="display: flex; justify-content: center; align-items: center; height: 100%; color: #666;">
+                    <div>
+                        <h3>Oops! Something went wrong.</h3>
+                        <p>This page didn't load Google Maps correctly.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <aside class="live-updates-sidebar">
+            <h2 class="sidebar-title">Live Contents</h2>
+            <ul id="live-updates-list" class="live-updates-list">
+                <li class="update-item">Community fridge at Main St. just got fresh bread</li>
+                <li class="update-item">5 new items added to Downtown Fridge</li>
+                <li class="update-item">Park Fridge needs more vegetables</li>
+                <li class="update-item">University Fridge restocked with dairy</li>
+            </ul>
+        </aside>
+    </main>
+
+    <!-- Add Fridge Modal -->
+    <div class="modal" id="addFridgeModal">
+        <div class="modal-content">
+            <button class="close-btn" id="closeAddFridge">&times;</button>
+            <h2 class="modal-title">Add a New Community Fridge</h2>
+            <form id="fridgeForm">
+                <div class="form-group">
+                    <label for="fridgeName">Fridge Name</label>
+                    <input type="text" id="fridgeName" required placeholder="e.g., Downtown Community Fridge">
+                </div>
+                <div class="form-group">
+                    <label for="location">Address</label>
+                    <input type="text" id="location" required placeholder="Enter full address">
+                </div>
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea id="description" rows="3" placeholder="Tell people about this fridge (optional)"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="accessType">Access Type</label>
+                    <select id="accessType">
+                        <option value="24/7">24/7 Access</option>
+                        <option value="business-hours">Business Hours Only</option>
+                        <option value="by-request">Access By Request</option>
+                    </select>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" id="cancelAddFridge">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Add Fridge</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- About Us Modal -->
+    <div class="modal" id="aboutModal">
+        <div class="modal-content">
+            <button class="close-btn" id="closeAbout">&times;</button>
+            <h2 class="modal-title">About FridgeFinder</h2>
+            <div class="info-section">
+                <h3>Our Mission</h3>
+                <p>FridgeFinder connects communities to reduce food waste and fight hunger by making surplus food easily accessible to those who need it.</p>
+            </div>
+            <div class="info-section">
+                <h3>Who We Are</h3>
+                <p>We're a community-driven platform that helps people locate and share community fridges in their neighborhood. Our team consists of volunteers passionate about sustainability and food security.</p>
+            </div>
+            <div class="info-section">
+                <h3>Community Impact</h3>
+                <ul>
+                    <li>Reduced food waste by connecting donors with recipients</li>
+                    <li>Created a network of over 200 community fridges nationwide</li>
+                    <li>Saved an estimated 50,000 meals from going to waste</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- How It Works Modal -->
+    <div class="modal" id="howItWorksModal">
+        <div class="modal-content">
+            <button class="close-btn" id="closeHowItWorks">&times;</button>
+            <h2 class="modal-title">How FridgeFinder Works</h2>
+            <div class="info-section">
+                <h3>For Food Donors</h3>
+                <ol>
+                    <li>Find a nearby community fridge using our map</li>
+                    <li>Check the fridge's current needs (if listed)</li>
+                    <li>Bring your surplus food to the location</li>
+                    <li>Share what you added in the Live Updates</li>
+                </ol>
+            </div>
+            <div class="info-section">
+                <h3>For Those Needing Food</h3>
+                <ol>
+                    <li>Locate the nearest fridge to you</li>
+                    <li>Check the Live Updates for recent additions</li>
+                    <li>Take what you need - no questions asked</li>
+                    <li>Consider giving back when you're able</li>
+                </ol>
+            </div>
+            <div class="info-section">
+                <h3>For Fridge Hosts</h3>
+                <ul>
+                    <li>Register your community fridge on our platform</li>
+                    <li>Keep your listing updated with hours and needs</li>
+                    <li>Monitor and moderate donations</li>
+                    <li>Join our network of food security advocates</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <script>
+        
+        // Sample data for fridges
+        const sampleFridges = [
+            {
+                id: 1,
+                name: "Downtown Community Fridge",
+                location: "123 Main St, Cityville",
+                description: "24/7 access fridge with regular donations from local businesses",
+                type: "24/7"
+            },
+            {
+                id: 2,
+                name: "Park Side Fridge",
+                location: "456 Oak Ave, Cityville",
+                description: "Located near the playground, restocked every morning",
+                type: "business-hours"
+            },
+            {
+                id: 3,
+                name: "University Sharing Fridge",
+                location: "789 College Blvd, Cityville",
+                description: "Student-run fridge, open during semester",
+                type: "business-hours"
+            }
+        ];
+
+        // Modal functionality
+        const addFridgeBtn = document.getElementById("addFridgeBtn");
+        const aboutBtn = document.getElementById("aboutBtn");
+        const howItWorksBtn = document.getElementById("howItWorksBtn");
+        
+        const addFridgeModal = document.getElementById("addFridgeModal");
+        const aboutModal = document.getElementById("aboutModal");
+        const howItWorksModal = document.getElementById("howItWorksModal");
+        
+        const closeAddFridge = document.getElementById("closeAddFridge");
+        const closeAbout = document.getElementById("closeAbout");
+        const closeHowItWorks = document.getElementById("closeHowItWorks");
+        
+        const cancelAddFridge = document.getElementById("cancelAddFridge");
+        const fridgeForm = document.getElementById("fridgeForm");
+
+        // Open modals
+        addFridgeBtn.addEventListener("click", () => {
+            addFridgeModal.style.display = "flex";
+        });
+
+        aboutBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            aboutModal.style.display = "flex";
+        });
+
+        howItWorksBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            howItWorksModal.style.display = "flex";
+        });
+
+        // Close modals
+        closeAddFridge.addEventListener("click", () => {
+            addFridgeModal.style.display = "none";
+        });
+
+        closeAbout.addEventListener("click", () => {
+            aboutModal.style.display = "none";
+        });
+
+        closeHowItWorks.addEventListener("click", () => {
+            howItWorksModal.style.display = "none";
+        });
+
+        cancelAddFridge.addEventListener("click", () => {
+            addFridgeModal.style.display = "none";
+        });
+
+        // Close when clicking outside modal content
+        window.addEventListener("click", (e) => {
+            if (e.target === addFridgeModal) {
+                addFridgeModal.style.display = "none";
+            }
+            if (e.target === aboutModal) {
+                aboutModal.style.display = "none";
+            }
+            if (e.target === howItWorksModal) {
+                howItWorksModal.style.display = "none";
+            }
+        });
+
+        // Handle form submission
+        fridgeForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+            
+            const fridgeName = document.getElementById("fridgeName").value;
+            const location = document.getElementById("location").value;
+            const description = document.getElementById("description").value;
+            const accessType = document.getElementById("accessType").value;
+            
+            const newFridge = {
+                id: sampleFridges.length + 1,
+                name: fridgeName,
+                location: location,
+                description: description,
+                type: accessType
+            };
+            
+            sampleFridges.push(newFridge);
+            renderFridgeList();
+            
+            alert(`${fridgeName} has been added to our network!`);
+            addFridgeModal.style.display = "none";
+            fridgeForm.reset();
+        });
+
+        // Render fridge list
+        function renderFridgeList() {
+            const fridgeList = document.getElementById("fridge-list");
+            fridgeList.innerHTML = "";
+            
+            sampleFridges.forEach(fridge => {
+                const fridgeCard = document.createElement("div");
+                fridgeCard.className = "fridge-card";
+                fridgeCard.innerHTML = `
+                    <div class="fridge-name">${fridge.name}</div>
+                    <div class="fridge-location">${fridge.location}</div>
+                    <div class="fridge-access" style="font-size: 0.75rem; color: ${fridge.type === '24/7' ? 'var(--primary-color)' : 'var(--dark-gray)'}; margin-top: 0.5rem;">
+                        ${fridge.type === '24/7' ? '🕒 24/7 Access' : fridge.type === 'business-hours' ? '🕒 Business Hours' : '🔐 By Request'}
+                    </div>
+                `;
+                fridgeList.appendChild(fridgeCard);
+            });
+        }
+
+        // Initialize the page
+        document.addEventListener("DOMContentLoaded", () => {
+            renderFridgeList();
+        });
+    
+    </script>
+</body>
+</html>
